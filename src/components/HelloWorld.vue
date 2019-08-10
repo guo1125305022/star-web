@@ -17,6 +17,16 @@
                 </el-collapse-item>
                 <el-collapse-item name="extend_form_component">
                     <template slot="title"><p style="padding-left: 10px">扩展表单组件</p></template>
+                    <draggable tag="ul" style="list-style: none" :list="formExtendComponents.Components"
+                               v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
+                               @end="handleMoveEnd"
+                               @start="HandleMoveStart(formExtendComponents.type)"
+                               :move="handleMove">
+                        <li v-for="(item,index) in formExtendComponents.Components" :key="index" class="ul_list_item">
+                            <i v-if="item.icon!==null" :class="item.icon" class="icon"></i>
+                            {{item.name}}
+                        </li>
+                    </draggable>
                 </el-collapse-item>
                 <el-collapse-item name="base_layout_component">
                     <template slot="title"><p style="padding-left: 10px">基本布局</p></template>
@@ -28,16 +38,17 @@
         </el-aside>
         <el-main>
             <el-container>
-                <el-header>g
-                 <tools-btn-group></tools-btn-group>
+                <el-header>
+                    <tools-btn-group :data="data"></tools-btn-group>
                 </el-header>
-                <el-main>
+                <el-main style="    border: 1px darkblue dashed;">
                     <draggable class="widget-form-list"
                                v-model="data.list"
                                v-bind="{group:'people', ghostClass: 'ghost'}"
                                @end="handleMoveEnd"
                                @add="handleWidgetAdd"
                     >
+                        {{data.list}}
                     </draggable>
                 </el-main>
             </el-container>
@@ -58,6 +69,7 @@
     import draggable from 'vuedraggable'
     import toolsBtnGroup from "./toolsBtnGroup";
     import {formComponents, FormComponentsGroupType} from '../configs/FormComponents.js';
+    import {FormExtendComponents, FormExtendComponentsGroupType} from '../configs/FormExtendComponents.js'
 
     export default {
         name: 'HelloWorld',
@@ -76,6 +88,7 @@
                 activeNames: "base_form_component",
                 activeName: 'first',
                 baseFormComponents: formComponents,
+                formExtendComponents: FormExtendComponents,
                 moveType: null,
             }
         },
@@ -86,14 +99,14 @@
             handleChange() {
             },
             handleMoveEnd(evt) {
-                console.log('end', evt)
+                // console.log('end', evt)
             },
             HandleMoveStart(moveType) {
                 if (moveType == null || moveType.length < 1) {
                     return
                 }
                 this.moveType = moveType;
-                console.log('start', moveType)
+                // console.log('start', moveType)
             },
             handleMove() {
                 return true;
@@ -103,18 +116,23 @@
                 if (moveType == null || moveType.length < 1) {
                     return
                 }
+                const newIndex = evt.newIndex;
+                const oldIndex = evt.oldIndex;
+                let srcComponents = null;
                 switch (moveType) {
                     case FormComponentsGroupType:
-                        this.handlerForm(evt);
-                        break
-
+                        srcComponents = this.baseFormComponents.Components;
+                        break;
+                    case FormExtendComponentsGroupType:
+                        srcComponents = this.formExtendComponents.Components;
+                        break;
+                    default:
+                        return;
                 }
+                console.log(srcComponents[oldIndex]);
+                // this.data.list.push(srcComponents[oldIndex])
             },
-            handlerForm(evt) {
-                const newIndex = evt.newIndex
-                const oldIndex = evt.oldIndex;
-                console.log("就索引" + oldIndex, "新索引" + newIndex);
-            }
+
 
         }
     }
