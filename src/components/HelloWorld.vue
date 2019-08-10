@@ -4,12 +4,12 @@
             <el-collapse v-model="activeNames" @change="handleChange" accordion>
                 <el-collapse-item name="base_form_component">
                     <template slot="title" style="background-color: aquamarine"><p style="padding-left: 10px">基本表单组件</p></template>
-                    <draggable tag="ul" style="list-style: none" :list="baseFormComponents"
+                    <draggable tag="ul" style="list-style: none" :list="baseFormComponents.Components"
                                v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
                                @end="handleMoveEnd"
-                               @start="handleMoveStart"
+                               @start="HandleMoveStart(baseFormComponents.type)"
                                :move="handleMove">
-                        <li v-for="(item,index) in baseFormComponents" :key="index" class="ul_list_item">
+                        <li v-for="(item,index) in baseFormComponents.Components" :key="index" class="ul_list_item">
                             <i v-if="item.icon!==null" :class="item.icon" class="icon"></i>
                             {{item.name}}
                         </li>
@@ -17,41 +17,29 @@
                 </el-collapse-item>
                 <el-collapse-item name="extend_form_component">
                     <template slot="title"><p style="padding-left: 10px">扩展表单组件</p></template>
-                    <div>控制反馈：通过界面样式和交互动效让用户可以清晰的感知自己的操作；</div>
-                    <div>页面反馈：操作后，通过页面元素的变化清晰地展现当前状态。</div>
                 </el-collapse-item>
                 <el-collapse-item name="base_layout_component">
                     <template slot="title"><p style="padding-left: 10px">基本布局</p></template>
-                    <div>简化流程：设计简洁直观的操作流程；</div>
-                    <div>清晰明确：语言表达清晰且表意明确，让用户快速理解进而作出决策；</div>
-                    <div>帮助用户识别：界面简单直白，让用户快速识别而非回忆，减少用户记忆负担。</div>
                 </el-collapse-item>
                 <el-collapse-item name="extend_layout_componet">
                     <template slot="title"><p style="padding-left: 10px">扩展布局组件</p></template>
-                    <div>用户决策：根据场景可给予用户操作建议或安全提示，但不能代替用户进行决策；</div>
-                    <div>结果可控：用户可以自由的进行操作，包括撤销、回退和终止当前操作等。</div>
                 </el-collapse-item>
             </el-collapse>
         </el-aside>
         <el-main>
             <el-container>
-                <el-header>
-                    <el-tooltip content="导入JSON">
-                        <el-button type="success" size="medium" circle icon="el-icon-upload"></el-button>
-                    </el-tooltip>
-                    <el-tooltip content="清空">
-                        <el-button type="danger" size="medium" circle icon="el-icon-delete"></el-button>
-                    </el-tooltip>
-                    <el-tooltip content="预览">
-                        <el-button type="info" size="medium" circle icon="el-icon-view"></el-button>
-                    </el-tooltip>
-                    <el-tooltip content="生成JSON">
-                        <el-button type="warning" size="medium" circle icon="el-icon-position"></el-button>
-                    </el-tooltip>
-                    <el-tooltip content="生成代码">
-                        <el-button type="primary" size="medium" circle icon="el-icon-position"></el-button>
-                    </el-tooltip>
+                <el-header>g
+                 <tools-btn-group></tools-btn-group>
                 </el-header>
+                <el-main>
+                    <draggable class="widget-form-list"
+                               v-model="data.list"
+                               v-bind="{group:'people', ghostClass: 'ghost'}"
+                               @end="handleMoveEnd"
+                               @add="handleWidgetAdd"
+                    >
+                    </draggable>
+                </el-main>
             </el-container>
         </el-main>
         <el-aside width="240px">
@@ -68,6 +56,8 @@
 
 <script>
     import draggable from 'vuedraggable'
+    import toolsBtnGroup from "./toolsBtnGroup";
+    import {formComponents, FormComponentsGroupType} from '../configs/FormComponents.js';
 
     export default {
         name: 'HelloWorld',
@@ -75,50 +65,18 @@
             msg: String
         },
         components: {
-            draggable
+            draggable,
+            toolsBtnGroup
         },
         data() {
             return {
+                data: {
+                    list: []
+                },
                 activeNames: "base_form_component",
                 activeName: 'first',
-                baseFormComponents: [
-                    {
-                        icon: 'el-icon-bank-card',
-                        name: '单行文本'
-                    },
-                    {
-                        icon: 'el-icon-bank-card',
-                        name: '多行文本'
-                    },
-                    {
-                        icon: null,
-                        name: '单选框组'
-                    }, {
-                        icon: null,
-                        name: '多选框组'
-                    }, {
-                        icon: null,
-                        name: '时间选择器'
-                    }, {
-                        icon: null,
-                        name: '日期选择器'
-                    }, {
-                        icon: 'el-icon-star-on',
-                        name: '评分'
-                    }, {
-                        icon: null,
-                        name: '颜色选择器'
-                    }, {
-                        icon: null,
-                        name: '下拉选择框'
-                    }, {
-                        icon: null,
-                        name: '开关'
-                    }, {
-                        icon: null,
-                        name: '滑块'
-                    },
-                ],
+                baseFormComponents: formComponents,
+                moveType: null,
             }
         },
         methods: {
@@ -130,11 +88,32 @@
             handleMoveEnd(evt) {
                 console.log('end', evt)
             },
-            handleMoveStart({oldIndex}) {
-                console.log('start', oldIndex, this.basicComponents)
+            HandleMoveStart(moveType) {
+                if (moveType == null || moveType.length < 1) {
+                    return
+                }
+                this.moveType = moveType;
+                console.log('start', moveType)
             },
             handleMove() {
                 return true;
+            },
+            handleWidgetAdd(evt) {
+                const moveType = this.moveType;
+                if (moveType == null || moveType.length < 1) {
+                    return
+                }
+                switch (moveType) {
+                    case FormComponentsGroupType:
+                        this.handlerForm(evt);
+                        break
+
+                }
+            },
+            handlerForm(evt) {
+                const newIndex = evt.newIndex
+                const oldIndex = evt.oldIndex;
+                console.log("就索引" + oldIndex, "新索引" + newIndex);
             }
 
         }
@@ -161,6 +140,7 @@
         position: relative;
         display: block;
         background-color: rgba(0, 0, 0, 0.08);
+        cursor: move;
 
         .icon {
             margin-right: 6px;
@@ -171,5 +151,8 @@
         }
     }
 
-
+    .widget-form-list {
+        height: 100%;
+        padding-bottom: 150px;
+    }
 </style>
