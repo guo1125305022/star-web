@@ -1,4 +1,7 @@
 <template>
+    <template v-for="(component ,index) in data.formComponents">
+
+    </template>
 
 </template>
 

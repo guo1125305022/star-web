@@ -27,7 +27,7 @@
              * 清空表单
              * */
             handlerClearFormComponents() {
-                this.data.list = [];
+                this.data.formComponents = [];
                 console.log(this.data)
             },
             /**

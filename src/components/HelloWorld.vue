@@ -43,11 +43,10 @@
                 </el-header>
                 <el-main style="    border: 1px darkblue dashed;">
                     <draggable class="widget-form-list"
-                               v-model="data.list"
+                               v-model="data.formComponents"
                                v-bind="{group:'people', ghostClass: 'ghost'}"
                                @end="handleMoveEnd"
-                               @add="handleWidgetAdd"
-                    >
+                               @add="handleWidgetAdd">
                         {{data.list}}
                     </draggable>
                 </el-main>
@@ -57,8 +56,6 @@
             <el-tabs v-model="activeName">
                 <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
                 <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-                <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-                <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
             </el-tabs>
         </el-aside>
     </el-container>
@@ -83,7 +80,7 @@
         data() {
             return {
                 data: {
-                    list: []
+                    formComponents: []
                 },
                 activeNames: "base_form_component",
                 activeName: 'first',
