@@ -27,11 +27,9 @@
             //清空表单
             handlerClearFormComponents() {
                 this.data.formComponents = [];
-                console.log(this.data);
             },
             //预览json
             handlerViewJson() {
-
             },
         }
     }

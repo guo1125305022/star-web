@@ -4,13 +4,11 @@
 
         <template v-for="(component ,index) in components">
             <template v-if="component.groupType===formComponents.groupType">
-                <!--            <p>{{component}}</p>-->
                 <editor-component :component="component"></editor-component>
             </template>
             <template v-else-if="component.groupType===formExtendComponents.groupType"></template>
             <template v-else-if="component.groupType===layoutComponents.groupType"></template>
             <template v-else-if="component.groupType===layoutExtendComponents.groupType"></template>
-
         </template>
         </el-form>
     </div>

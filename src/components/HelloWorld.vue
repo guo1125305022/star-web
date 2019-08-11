@@ -105,7 +105,11 @@
             return {
                 data: {
                     formComponents: [],
-                    formConfig:{}
+                    formConfig:{
+                        labelWidth: 100,
+                        labelPosition: 'top',
+                        size: 'small'
+                    }
                 },
                 activeNames: "base_form_component",
                 activeName: 'first',
