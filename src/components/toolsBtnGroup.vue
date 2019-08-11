@@ -19,20 +19,17 @@
 </template>
 
 <script>
+
     export default {
         name: "toolsBtnGroup",
         props: ['data', 'select'],
         methods: {
-            /**
-             * 清空表单
-             * */
+            //清空表单
             handlerClearFormComponents() {
                 this.data.formComponents = [];
-                console.log(this.data)
+                console.log(this.data);
             },
-            /**
-             * 预览json
-             */
+            //预览json
             handlerViewJson() {
 
             },

@@ -1,5 +1,5 @@
-const groupType = "LayoutComponentsGroupType";
-const layoutComponentsArray = [
+const groupType = "LayoutExtendComponentsGroupType";
+export const layoutComponentsArray = [
     {
         type: 'grid',
         name: '栅格布局',
@@ -21,9 +21,9 @@ const layoutComponentsArray = [
         }
     }
 ]
-const LayoutComponents = {};
-LayoutComponents.Components = getComponents();
-LayoutComponents.groupType = groupType;
+const LayoutExtendComponents = {};
+LayoutExtendComponents.Components = getComponents();
+LayoutExtendComponents.groupType = groupType;
 function getComponents() {
     const result = JSON.parse(JSON.stringify(layoutComponentsArray));
     for (let i = 0; i < result.length; i++) {
@@ -32,4 +32,4 @@ function getComponents() {
     return result;
 }
 
-export default LayoutComponents;
+export default LayoutExtendComponents;

@@ -7,7 +7,7 @@
                     <draggable tag="ul" style="list-style: none" :list="baseFormComponents.Components"
                                v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
                                @end="handleMoveEnd"
-                               @start="HandleMoveStart(baseFormComponents.type)"
+                               @start="HandleMoveStart(baseFormComponents.groupType)"
                                :move="handleMove">
                         <li v-for="(item,index) in baseFormComponents.Components" :key="index" class="ul_list_item">
                             <i v-if="item.icon!==null" :class="item.icon" class="icon"></i>
@@ -20,7 +20,7 @@
                     <draggable tag="ul" style="list-style: none" :list="formExtendComponents.Components"
                                v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
                                @end="handleMoveEnd"
-                               @start="HandleMoveStart(formExtendComponents.type)"
+                               @start="HandleMoveStart(formExtendComponents.groupType)"
                                :move="handleMove">
                         <li v-for="(item,index) in formExtendComponents.Components" :key="index" class="ul_list_item">
                             <i v-if="item.icon!==null" :class="item.icon" class="icon"></i>
@@ -30,9 +30,29 @@
                 </el-collapse-item>
                 <el-collapse-item name="base_layout_component">
                     <template slot="title"><p style="padding-left: 10px">基本布局</p></template>
+                    <draggable tag="ul" style="list-style: none" :list="layoutComponents.Components"
+                               v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
+                               @end="handleMoveEnd"
+                               @start="HandleMoveStart(layoutComponents.groupType)"
+                               :move="handleMove">
+                        <li v-for="(item,index) in layoutComponents.Components" :key="index" class="ul_list_item">
+                            <i v-if="item.icon!==null" :class="item.icon" class="icon"></i>
+                            {{item.name}}
+                        </li>
+                    </draggable>
                 </el-collapse-item>
                 <el-collapse-item name="extend_layout_componet">
                     <template slot="title"><p style="padding-left: 10px">扩展布局组件</p></template>
+                    <draggable tag="ul" style="list-style: none" :list="layoutExtendComponents.Components"
+                               v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
+                               @end="handleMoveEnd"
+                               @start="HandleMoveStart(layoutExtendComponents.groupType)"
+                               :move="handleMove">
+                        <li v-for="(item,index) in layoutExtendComponents.Components" :key="index" class="ul_list_item">
+                            <i v-if="item.icon!==null" :class="item.icon" class="icon"></i>
+                            {{item.name}}
+                        </li>
+                    </draggable>
                 </el-collapse-item>
             </el-collapse>
         </el-aside>
@@ -47,7 +67,7 @@
                                v-bind="{group:'people', ghostClass: 'ghost'}"
                                @end="handleMoveEnd"
                                @add="handleWidgetAdd">
-                        {{data.list}}
+                     <editor-form-components :components="data.formComponents" :formConfig="data.formConfig"></editor-form-components>
                     </draggable>
                 </el-main>
             </el-container>
@@ -65,8 +85,11 @@
 <script>
     import draggable from 'vuedraggable'
     import toolsBtnGroup from "./toolsBtnGroup";
-    import {formComponents, FormComponentsGroupType} from '../configs/FormComponents.js';
-    import {FormExtendComponents, FormExtendComponentsGroupType} from '../configs/FormExtendComponents.js'
+    import FormComponents from '../configs/FormComponents.js';
+    import FormExtendComponents from '../configs/FormExtendComponents.js'
+    import LayoutComponents from '../configs/LayoutComponents.js'
+    import LayoutExtendComponents from '../configs/LayoutExtendComponents.js'
+    import EditorFormComponents from './EditorFormComponents.vue';
 
     export default {
         name: 'HelloWorld',
@@ -75,17 +98,21 @@
         },
         components: {
             draggable,
-            toolsBtnGroup
+            toolsBtnGroup,
+            EditorFormComponents
         },
         data() {
             return {
                 data: {
-                    formComponents: []
+                    formComponents: [],
+                    formConfig:{}
                 },
                 activeNames: "base_form_component",
                 activeName: 'first',
-                baseFormComponents: formComponents,
+                baseFormComponents: FormComponents,
                 formExtendComponents: FormExtendComponents,
+                layoutComponents:LayoutComponents,
+                layoutExtendComponents:LayoutExtendComponents,
                 moveType: null,
             }
         },
@@ -117,17 +144,17 @@
                 const oldIndex = evt.oldIndex;
                 let srcComponents = null;
                 switch (moveType) {
-                    case FormComponentsGroupType:
+                    case FormComponents.groupType:
                         srcComponents = this.baseFormComponents.Components;
                         break;
-                    case FormExtendComponentsGroupType:
+                    case FormExtendComponents.groupType:
                         srcComponents = this.formExtendComponents.Components;
                         break;
                     default:
                         return;
                 }
-                console.log(srcComponents[oldIndex]);
-                // this.data.list.push(srcComponents[oldIndex])
+                console.log( this.data.formComponents);
+
             },
 
 

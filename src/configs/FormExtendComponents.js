@@ -1,6 +1,6 @@
-export const FormExtendComponentsGroupType = "FormExtendComponentsGroupType";
-export const FormExtendComponents = {
-    type: FormExtendComponentsGroupType,
+ const groupType = "FormExtendComponentsGroupType";
+const formExtendComponentsArray = {
+    groupType: groupType,
     Components: [
         {
             type: 'blank',
@@ -65,3 +65,24 @@ export const FormExtendComponents = {
         }
     ]
 }
+
+const FormExtend = {};
+FormExtend.Components = getComponents();
+
+function getComponents() {
+    const result = JSON.parse(JSON.stringify(formExtendComponentsArray.Components));
+    for (let i = 0; i < result.length; i++) {
+        result[i].groupType = groupType;
+    }
+    return result;
+}
+
+FormExtend.groupType = groupType;
+
+export default FormExtend
+
+
+
+
+
+

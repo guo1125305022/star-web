@@ -1,7 +1,7 @@
-export const FormComponentsGroupType='FormComponentsGroupType'
+ const FormComponentsGroupType = 'FormComponentsGroupType'
 
-export const formComponents = {
-    type:FormComponentsGroupType,
+const formComponentsArray = {
+    type: FormComponentsGroupType,
     Components: [
         {
             type: 'input',
@@ -231,3 +231,17 @@ export const formComponents = {
         }
     ]
 }
+
+const FormComponents={};
+
+FormComponents.Components=getComponents();
+function getComponents(){
+    const result = JSON.parse(JSON.stringify(formComponentsArray.Components));
+    for (let i = 0; i < result.length; i++) {
+        result[i].groupType = FormComponentsGroupType;
+    }
+    return result;
+}
+FormComponents.groupType=FormComponentsGroupType;
+export default FormComponents
+
