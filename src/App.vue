@@ -6,6 +6,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/TestForm.vue'
 
 export default {
   name: 'app',
@@ -24,6 +25,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   min-height: 100%;
+  height: 100%;
+}
+html,body{
   height: 100%;
 }
 </style>

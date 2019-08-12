@@ -1,12 +1,10 @@
 <template>
-    <el-form-item
-            :label="component.name">
+    <el-form-item :label="component.name" class="widget-view">
         <template v-if="component.type==='input'">
             <el-input
                     v-model="component.options.defaultValue"
                     :style="{width: component.options.width}"
-                    :placeholder="component.options.placeholder"
-            ></el-input>
+                    :placeholder="component.options.placeholder" ></el-input>
         </template>
         <template v-else-if="component.type==='textarea'">
             <el-input
@@ -24,7 +22,7 @@
                     :style="{width: component.options.width}"
             ></el-input-number>
         </template>
-        <template v-if="component.type == 'radio'">
+        <template v-if="component.type === 'radio'">
             <el-radio-group v-model="component.options.defaultValue"
                             :style="{width: component.options.width}">
                 <el-radio
@@ -35,7 +33,7 @@
             </el-radio-group>
         </template>
 
-        <template v-if="component.type == 'checkbox'">
+        <template v-if="component.type === 'checkbox'">
             <el-checkbox-group
                     v-model="component.options.defaultValue"
                     :style="{width: component.options.width}">
@@ -47,7 +45,7 @@
             </el-checkbox-group>
         </template>
 
-        <template v-if="component.type == 'time'">
+        <template v-if="component.type === 'time'">
             <el-time-picker
                     v-model="component.options.defaultValue"
                     :is-range="component.options.isRange"
@@ -64,7 +62,7 @@
             </el-time-picker>
         </template>
 
-        <template v-if="component.type == 'date'">
+        <template v-if="component.type === 'date'">
             <el-date-picker
                     v-model="component.options.defaultValue"
                     :type="component.options.type"
@@ -81,7 +79,7 @@
             </el-date-picker>
         </template>
 
-        <template v-if="component.type == 'rate'">
+        <template v-if="component.type === 'rate'">
             <el-rate v-model="component.options.defaultValue"
                      :max="component.options.max"
                      :disabled="component.options.disabled"
@@ -89,7 +87,7 @@
             ></el-rate>
         </template>
 
-        <template v-if="component.type == 'color'">
+        <template v-if="component.type === 'color'">
             <el-color-picker
                     v-model="component.options.defaultValue"
                     :disabled="component.options.disabled"
@@ -97,7 +95,7 @@
             ></el-color-picker>
         </template>
 
-        <template v-if="component.type == 'select'">
+        <template v-if="component.type === 'select'">
             <el-select
                     v-model="component.options.defaultValue"
                     :disabled="component.options.disabled"
@@ -110,7 +108,7 @@
             </el-select>
         </template>
 
-        <template v-if="component.type=='switch'">
+        <template v-if="component.type==='switch'">
             <el-switch
                     v-model="component.options.defaultValue"
                     :disabled="component.options.disabled"
@@ -129,5 +127,5 @@
 </script>
 
 <style scoped>
-
+@import "../styles/fromComponentStyle.less";
 </style>

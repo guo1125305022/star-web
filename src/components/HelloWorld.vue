@@ -72,10 +72,12 @@
                 </el-main>
             </el-container>
         </el-main>
-        <el-aside width="240px">
+        <el-aside width="300px">
             <el-tabs v-model="activeName">
-                <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-                <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+                <el-tab-pane label="表单配置" name="first">
+                    <form-config :formConfig="data.formConfig"></form-config>
+                </el-tab-pane>
+                <el-tab-pane label="字段配置" name="second">字段配置</el-tab-pane>
             </el-tabs>
         </el-aside>
     </el-container>
@@ -90,6 +92,7 @@
     import LayoutComponents from '../configs/LayoutComponents.js'
     import LayoutExtendComponents from '../configs/LayoutExtendComponents.js'
     import EditorFormComponents from './EditorFormComponents.vue';
+    import FormConfig from "@/components/FormConfig";
 
     export default {
         name: 'HelloWorld',
@@ -99,7 +102,7 @@
         components: {
             draggable,
             toolsBtnGroup,
-            EditorFormComponents
+            EditorFormComponents,FormConfig
         },
         data() {
             return {
